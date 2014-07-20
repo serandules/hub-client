@@ -1,5 +1,5 @@
-var WebSocket = require('ws');
 var fs = require('fs');
+var socket = require('./lib/socket');
 
 var str = JSON.stringify;
 var pas = JSON.parse;
@@ -10,8 +10,6 @@ var app = express();
 
 var refs = {};
 
-var hub = 'wss://hub.serandives.com:4000';
-
 var execsDir = './execs';
 
 var execs = {};
@@ -21,16 +19,31 @@ files.forEach(function (file) {
     execs[exec] = require(execsDir + '/' + file);
 });
 
-var client = new WebSocket(hub, {
-    ca: [fs.readFileSync('ssl/hub.cert')]
+
+/*var client = new WebSocket(hub, {
+    ca: [fs.readFileSync('ssl/hub.cert')],
+    headers: {
+        'User-Agent': 'hub-client'
+    }
 });
 
 client.on('open', function () {
     console.log('connected');
+    setTimeout(function () {
+        client.send(str({
+            type: 'hub',
+            data: 'nothing'
+        }));
+    }, 1000);
 });
 
 client.on('message', function (o) {
-    o = pas(o);
+    try {
+        o = pas(o);
+    } catch (e) {
+        console.error(e);
+        return;
+    }
     var id = o.id;
     console.log(id);
     var exec = execs[o.exec];
@@ -62,4 +75,4 @@ client.on('message', function (o) {
 
 client.on('close', function () {
 
-});
+});*/
