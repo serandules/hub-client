@@ -1,0 +1,16 @@
+{
+    "name": "hub-client",
+    "description": "hub-client",
+    "version": "0.0.0",
+    "author": {
+        "name": "serandives",
+        "email": "serandives@gmail.com"
+    },
+    "dependencies": {
+        "ws": "0.4.31"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/serandules/hub-client.git"
+    }
+}
