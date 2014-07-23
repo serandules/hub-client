@@ -1,57 +1,27 @@
 var sh = require('./sh');
 
-var kill = function (exec, notify) {
-    exec({
-        action: 'kill',
-        signal: 'SIGKILL'
-    }, notify);
-};
+var PLUGIN = 'node';
 
-var run = function (id, main, notify) {
-    var exec = sh(id, {
+var start = function(notify, options) {
+    var opts = {
+        action: 'run',
         command: 'node',
-        args: [main]
-    }, notify)
+        args:[options.main]
+    };
+    sh(notify, opts);
 };
 
-module.exports = function (id, o, notify) {
-    var exec = run(id, o.main, function (err, o) {
-        if (err) {
-            notify(err);
-            return;
-        }
-        var event = o.event;
-        if (event === 'exit') {
-            notify(false, {
-                event: 'stopped'
-            });
-            return;
-        }
-        if (event === 'stdout data' || event === 'stderr data') {
-            notify(false, {
-                event: 'logs',
-                data: o.data
-            });
-        }
-    });
-    return function (options, notify) {
-        var action = options.action;
-        if (action === 'stop') {
-            kill(exec, function (err) {
-                notify(err, {
-                    event: 'stopped'
-                });
-            });
-            return;
-        }
-        if (action === 'restart') {
-            kill(exec, function (err) {
-                run(id, o.main, function (err) {
-                    notify(err, {
-                        event: 'restarted'
-                    });
-                });
-            });
-        }
-    };
+var stop = function() {
+
+};
+
+module.exports = function (notify, options) {
+    console.log(options);
+    var action = options.action;
+    switch (action) {
+        case 'start':
+            console.log('start message');
+            start(notify, options);
+            break;
+    }
 };

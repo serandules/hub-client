@@ -7,20 +7,22 @@ var HUB = 'wss://hub.serandives.com:4000/hub';
 
 var plugins = {
     hub: require('./plugins/hub'),
-    sh: require('./plugins/sh')
+    sh: require('./plugins/sh'),
+    git: require('./plugins/git')
 };
 
-var process = function (hub, options) {
+var process = function (options, hub) {
     var name = options.plugin;
     var plugin = plugins[name];
     if (!plugin) {
         console.error('unknown plugin');
         return;
     }
-    plugin(function (data) {
-        data.plugin = name;
-        hub.emit('exec', data);
-    }, options);
+    var id = options.id;
+    plugin(options, function (options) {
+        options.id = id;
+        hub.emit('done', options);
+    });
 };
 
 var agent = new https.Agent({
@@ -34,9 +36,9 @@ var hub = io(HUB, {
 
 hub.once('connect', function (sock) {
     console.log('connected');
-    hub.on('exec', function (data) {
-        console.log('exec command');
-        process(hub, data);
+    hub.on('do', function (data) {
+        console.log('do command');
+        process(data, hub);
     });
     hub.on('disconnect', function () {
         console.log('disconnected');
