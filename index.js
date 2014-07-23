@@ -6,16 +6,21 @@ var fs = require('fs');
 var HUB = 'wss://hub.serandives.com:4000/hub';
 
 var plugins = {
-    hub: require('./plugins/hub')
+    hub: require('./plugins/hub'),
+    sh: require('./plugins/sh')
 };
 
 var process = function (hub, options) {
-    var plugin = plugins[options.plugin];
+    var name = options.plugin;
+    var plugin = plugins[name];
     if (!plugin) {
-        console.err('unknown plugin');
+        console.error('unknown plugin');
         return;
     }
-    plugin(hub, options);
+    plugin(function (data) {
+        data.plugin = name;
+        hub.emit('exec', data);
+    }, options);
 };
 
 var agent = new https.Agent({
@@ -27,7 +32,7 @@ var hub = io(HUB, {
     agent: agent
 });
 
-hub.on('connect', function () {
+hub.once('connect', function (sock) {
     console.log('connected');
     hub.on('exec', function (data) {
         console.log('exec command');
@@ -35,6 +40,9 @@ hub.on('connect', function () {
     });
     hub.on('disconnect', function () {
         console.log('disconnected');
+    });
+    hub.on('reconnect', function () {
+        console.log('reconnected');
     });
 });
 /*
