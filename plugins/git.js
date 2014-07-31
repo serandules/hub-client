@@ -49,22 +49,57 @@ var pull = function (options, notify) {
 };
 
 var clone = function (options, notify) {
+    var id = options.id;
     var opts = {
+        id: id,
         action: 'run',
-        command: 'git',
-        args: ['clone', options.repo]
+        command: 'bash',
+        args: []
     };
+    console.log(options);
     var out = '';
-    sh(opts, function (options) {
-        switch (options.action) {
+    sh(opts, function (opts) {
+        switch (opts.action) {
             case 'stdout':
-                out += options.data;
+                out += opts.data;
                 break;
             case 'exit':
-                notify({
+                console.log('------------------exit-------------------');
+                /*notify({
+                    id: id,
                     plugin: PLUGIN,
-                    action: 'pulled',
+                    action: 'cloned',
                     data: out
+                });*/
+                break;
+            case 'close':
+                console.log('-------------------close-----------------');
+                break;
+            case 'ran':
+                sh({
+                    id: id,
+                    action: 'run',
+                    command: 'cd',
+                    args: [options.dir]
+                }, function (opts) {
+                    switch (opts.action) {
+                        case 'ran':
+                            sh({
+                                id: id,
+                                action: 'run',
+                                command: 'git',
+                                args: ['clone' , options.repo]
+                            }, function (opts) {
+                                console.log('----------------cloned-------------------');
+                                notify({
+                                    id: id,
+                                    plugin: PLUGIN,
+                                    action: 'cloned',
+                                    data: out
+                                })
+                            });
+                            break;
+                    }
                 });
                 break;
         }
