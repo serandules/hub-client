@@ -1,7 +1,4 @@
-var WebSocket = require('ws');
 var https = require('https');
-var constants = require('constants');
-var io = require('socket.io-client');
 var fs = require('fs');
 var socproc = require('socproc-client');
 

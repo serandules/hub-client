@@ -7,7 +7,8 @@
         "email": "serandives@gmail.com"
     },
     "dependencies": {
-        "socket.io-client": "1.0.6"
+        "socket.io-client": "1.0.6",
+        "rimraf": "2.2.8"
     },
     "repository": {
         "type": "git",
