@@ -9,7 +9,7 @@ var plugins = [
 var HUB = 'hub.serandives.com:4000';
 
 var agent = new https.Agent({
-    ca: fs.readFileSync('ssl/hub.cert')
+    ca: fs.readFileSync('/etc/ssl/serand/hub.cert')
 });
 
 var spc = socproc('server', agent, {
