@@ -49,10 +49,15 @@ module.exports = function (exec) {
             child.stdout.pipe(log);
             child.stderr.pipe(error);
             child.stdin.write(cmdCD(DRONES_DIR));
+            child.stdin.write('echo "state : 1"\n');
             child.stdin.write(cmdClone(data.repo, id));
+            child.stdin.write('echo "state : 2"\n');
             child.stdin.write(cmdCD(id));
+            child.stdin.write('echo "state : 3"\n');
             child.stdin.write(cmdNPM());
+            child.stdin.write('echo "state : 4"\n');
             child.stdin.write(cmdStart(data.main));
+            child.stdin.write('echo "state : 5"\n');
             child.on('exit', function (code, signal) {
                 console.log('exit child : ' + id);
                 /*exec.server.emit('drone stop', {
