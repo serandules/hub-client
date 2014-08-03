@@ -29,6 +29,10 @@ var cmdStart = function (main) {
     return 'node ' + (main || 'index.js') + '\n';
 };
 
+var cmdNPM = function () {
+    return 'npm install';
+};
+
 module.exports = function (exec) {
     exec.server.on('drone list', function () {
         exec.server.emit('drone list', drones);
@@ -47,6 +51,7 @@ module.exports = function (exec) {
             child.stdin.write(cmdCD(DRONES_DIR));
             child.stdin.write(cmdClone(data.repo, id));
             child.stdin.write(cmdCD(id));
+            child.stdin.write(cmdNPM());
             child.stdin.write(cmdStart(data.main));
             child.on('exit', function (code, signal) {
                 console.log('exit child : ' + id);
