@@ -30,7 +30,7 @@ var cmdStart = function (main) {
 };
 
 var cmdNPM = function () {
-    return 'npm install';
+    return 'npm install' + '\n';
 };
 
 module.exports = function (exec) {
