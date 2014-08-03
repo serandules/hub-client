@@ -44,6 +44,7 @@ module.exports = function (exec) {
             child.id = id;
             child.stdout.pipe(log);
             child.stderr.pipe(error);
+            child.stdin.write(cmdCD(DRONES_DIR));
             child.stdin.write(cmdClone(data.repo, id));
             child.stdin.write(cmdCD(id));
             child.stdin.write(cmdStart(data.main));
