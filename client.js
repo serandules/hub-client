@@ -7,7 +7,7 @@ var socproc = require('socproc-client');
 var options = {
     hostname: 'hub.serandives.com',
     port: 4000,
-    ca: fs.readFileSync('ssl/hub.cert')
+    ca: fs.readFileSync('/etc/ssl/serand/hub.cert')
 };
 var agent = new https.Agent(options);
 
