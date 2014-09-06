@@ -15,3 +15,8 @@ var spc = socproc('server', agent, {
 spc.on('connect', function (exec) {
     require('./lib/hub')(exec);
 });
+
+process.on('uncaughtException', function (err) {
+    console.log('unhandled exception');
+    console.log(err);
+});
