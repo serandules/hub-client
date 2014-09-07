@@ -1,5 +1,6 @@
 var https = require('https');
 var fs = require('fs');
+var hub = require('./lib/hub');
 var socproc = require('socproc-client');
 
 var HUB = 'hub.serandives.com:4000';
@@ -13,7 +14,11 @@ var spc = socproc('server', agent, {
 });
 
 spc.on('connect', function (exec) {
-    require('./lib/hub')(exec);
+    hub(exec);
+});
+
+spc.on('reconnect', function(exec) {
+    hub.reconnect(exec);
 });
 
 process.on('uncaughtException', function (err) {
