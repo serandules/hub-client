@@ -23,5 +23,5 @@ spc.on('reconnect', function(exec) {
 
 process.on('uncaughtException', function (err) {
     console.log('unhandled exception ' + err);
-    console.trace(err.stack);
+    console.log(err.stack);
 });
