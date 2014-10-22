@@ -6,7 +6,9 @@ var socproc = require('socproc-client');
 var HUB = 'hub.serandives.com:4000';
 
 var agent = new https.Agent({
-    ca: fs.readFileSync('/etc/ssl/serand/hub.cert')
+    key: fs.readFileSync('/etc/ssl/serand/hub-client.key'),
+    cert: fs.readFileSync('/etc/ssl/serand/hub-client.crt'),
+    ca: fs.readFileSync('/etc/ssl/serand/hub.crt')
 });
 
 var spc = socproc('server', agent, {
@@ -17,7 +19,7 @@ spc.on('connect', function (exec) {
     hub(exec);
 });
 
-spc.on('reconnect', function(exec) {
+spc.on('reconnect', function (exec) {
     hub.reconnect(exec);
 });
 
