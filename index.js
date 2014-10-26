@@ -3,6 +3,8 @@ var fs = require('fs');
 var hub = require('./lib/hub');
 var socproc = require('socproc-client');
 
+var TOKEN = process.env.CLIENT_TOKEN;
+
 var HUB = 'hub.serandives.com:4000';
 
 var agent = new https.Agent({
@@ -12,7 +14,8 @@ var agent = new https.Agent({
 });
 
 var spc = socproc('server', agent, {
-    server: HUB
+    server: HUB,
+    query: 'token=' + TOKEN
 });
 
 spc.on('connect', function (exec) {
