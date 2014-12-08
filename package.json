@@ -7,7 +7,7 @@
         "email": "serandives@gmail.com"
     },
     "dependencies": {
-        "socket.io-client": "1.0.6",
+        "socket.io-client": "1.1.0",
         "socproc-client": "serandules/socproc-client#master",
         "logger": "serandules/logger#master",
         "utils": "serandules/utils#master",
