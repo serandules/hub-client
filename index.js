@@ -7,6 +7,8 @@ var TOKEN = process.env.CLIENT_TOKEN;
 
 var HUB = 'hub.serandives.com:4000';
 
+var started = false;
+
 var agent = new https.Agent({
     key: fs.readFileSync('/etc/ssl/serand/hub-client.key'),
     cert: fs.readFileSync('/etc/ssl/serand/hub-client.crt'),
@@ -29,4 +31,16 @@ spc.on('reconnect', function (exec) {
 process.on('uncaughtException', function (err) {
     console.log('unhandled exception ' + err);
     console.log(err.stack);
+    if (started) {
+        return;
+    }
+    process.send({
+        event: 'hub-client stopped'
+    });
+});
+
+started = true;
+
+process.send({
+    event: 'hub-client started'
 });
