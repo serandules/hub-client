@@ -1,4 +1,4 @@
-var debug = require('debug')('serandules-hub-client');
+var debug = require('debug')('serandules:hub-client');
 var https = require('https');
 var fs = require('fs');
 var hub = require('./lib/hub');
