@@ -1,3 +1,4 @@
+var debug = require('debug')('serandules-hub-client');
 var https = require('https');
 var fs = require('fs');
 var hub = require('./lib/hub');
@@ -29,8 +30,8 @@ spc.on('reconnect', function (exec) {
 });
 
 process.on('uncaughtException', function (err) {
-    console.log('unhandled exception ' + err);
-    console.log(err.stack);
+    debug('unhandled exception ' + err);
+    debug(err.stack);
     if (started) {
         return;
     }
