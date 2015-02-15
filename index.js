@@ -1,32 +1,18 @@
 var log = require('logger')('hub-client');
 var agent = require('hub-agent');
+var hub = require('./lib/hub');
 
-agent('hub-client', function () {
-    var https = require('https');
-    var fs = require('fs');
-    var hub = require('./lib/hub');
-    var socproc = require('socproc-client');
-
-    var TOKEN = process.env.CLIENT_TOKEN;
-
-    var HUB = 'hub.serandives.com:4000';
-
-    var agent = new https.Agent({
-        key: fs.readFileSync('/etc/ssl/serand/hub-client.key'),
-        cert: fs.readFileSync('/etc/ssl/serand/hub-client.crt'),
-        ca: fs.readFileSync('/etc/ssl/serand/hub.crt')
+agent.channel('server', function (err, channel) {
+    log.info('server channel of hub-client established');
+    channel.on('drone start', function(id, domain, repo) {
+        log.info('%s %s %s', id, domain, repo);
     });
-
-    var spc = socproc('server', agent, {
-        server: HUB,
-        query: 'token=' + TOKEN
+    channel.on('drone stop', function(data) {
+        log.info(data);
     });
-
-    spc.on('connect', function (exec) {
-        hub(exec);
+    channel.emiton('config', 'aws-key', function(value) {
+        log.info('aws-key value : %s', value);
     });
+});
 
-    spc.on('reconnect', function (exec) {
-        hub.reconnect(exec);
-    });
-}, 1);
+log.info('hub-client started');
