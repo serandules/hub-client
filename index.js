@@ -1,18 +1,19 @@
 var log = require('logger')('hub-client');
-var agent = require('hub-agent');
-var hub = require('./lib/hub');
+var clustor = require('clustor');
 
-agent.channel('server', function (err, channel) {
-    log.info('server channel of hub-client established');
-    channel.on('drone start', function(id, domain, repo) {
-        log.info('%s %s %s', id, domain, repo);
+clustor('hubclient.serandives.com', function () {
+    var agent = require('hub-agent');
+    agent('/drones', function (err, io) {
+        io.on('connect', function () {
+            io.on('join', function (drone) {
+                log.info(drone);
+            });
+            io.on('leave', function (drone) {
+                log.info(drone);
+            });
+        });
     });
-    channel.on('drone stop', function(data) {
-        log.info(data);
-    });
-    channel.emiton('config', 'aws-key', function(value) {
-        log.info('aws-key value : %s', value);
-    });
+}, function (err, address) {
+    log.info(JSON.stringify(address));
+    log.info('%s listening at https://%s:%s', configs.domain, address.address, address.port);
 });
-
-log.info('hub-client started');

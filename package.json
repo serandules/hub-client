@@ -1,22 +1,4 @@
 {
     "name": "hub-client",
-    "description": "hub-client",
-    "version": "0.0.0",
-    "author": {
-        "name": "serandives",
-        "email": "serandives@gmail.com"
-    },
-    "dependencies": {
-        "debug":"*",
-        "socket.io-client": "1.1.0",
-        "socproc-client": "serandules/socproc-client#master",
-        "logger": "serandules/logger#master",
-        "utils": "serandules/utils#master",
-        "node-uuid": "*",
-        "rimraf": "2.2.8"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/serandules/hub-client.git"
-    }
+    "dependencies": {}
 }
