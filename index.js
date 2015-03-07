@@ -1,16 +1,21 @@
 var log = require('logger')('hub-client');
 var droner = require('droner');
+var procevent = require('procevent')(process);
 
 var agent = require('hub-agent');
 agent('/servers', function (err, io) {
     io.once('connect', function () {
+        io.on('up', function () {
+            log.debug('server up request');
+            procevent.emit('up');
+        });
         io.on('start', function (id, repo) {
-            droner.start(id, repo, 'index.js', function (err, pid, port) {
+            droner.start(id, repo, 'index.js', function (err, process, port) {
                 if (err) {
                     return log.error('drone startup error | id:%s, error:%s', id, err);
                 }
-                io.emit('started', id, pid, port);
-                log.debug('drone started | id:%s, pid:%s, port:%s', id, pid, port);
+                io.emit('started', id, process, port);
+                log.debug('drone started | id:%s, pid:%s, port:%s', id, process.pid, port);
             });
         });
         io.on('stop', function (id) {
@@ -23,6 +28,8 @@ agent('/servers', function (err, io) {
         });
     });
 });
+
+procevent.emit('started', 0);
 
 log.info('hub-client started | pid:%s', process.pid);
 
