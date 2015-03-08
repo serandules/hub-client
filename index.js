@@ -14,7 +14,7 @@ agent('/servers', function (err, io) {
                 if (err) {
                     return log.error('drone startup error | id:%s, error:%s', id, err);
                 }
-                io.emit('started', id, process, port);
+                io.emit('started', id, process.pid, port);
                 log.debug('drone started | id:%s, pid:%s, port:%s', id, process.pid, port);
             });
         });
@@ -33,7 +33,8 @@ procevent.emit('started', 0);
 
 log.info('hub-client started | pid:%s', process.pid);
 
+/*
 process.on('uncaughtException', function (err) {
     log.fatal('unhandled exception %s', err);
     log.trace(err.stack);
-});
+});*/
