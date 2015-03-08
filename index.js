@@ -26,6 +26,12 @@ agent('/servers', function (err, io) {
                 log.debug('drone stopped | id:%s', id);
             });
         });
+
+        io.on('restart', function (id) {
+            droner.restart(id, function (err) {
+                log.debug('drone restarted | id:%s', id);
+            });
+        });
     });
 });
 
@@ -34,7 +40,7 @@ procevent.emit('started', 0);
 log.info('hub-client started | pid:%s', process.pid);
 
 /*
-process.on('uncaughtException', function (err) {
-    log.fatal('unhandled exception %s', err);
-    log.trace(err.stack);
-});*/
+ process.on('uncaughtException', function (err) {
+ log.fatal('unhandled exception %s', err);
+ log.trace(err.stack);
+ });*/
