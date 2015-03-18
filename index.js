@@ -37,12 +37,17 @@ agent('/servers', function (err, io) {
                     return log.error('drone stop error | id:%s, error:%s', id, err);
                 }
                 delete drones[id];
+                io.emit('stopped', id);
                 log.debug('drone stopped | id:%s', id);
             });
         });
 
         io.on('restart', function (id) {
-            droner.restart(id, function (err) {
+            var drone = drones[id];
+            droner.restart(id, function (err, process, port) {
+                drone.pid = process.pid;
+                drone.port = port;
+                io.emit('restarted', id, drone.domain, drone.pid, drone.port);
                 log.debug('drone restarted | id:%s', id);
             });
         });
