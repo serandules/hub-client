@@ -52,6 +52,8 @@ agent('/servers', function (err, io) {
     });
 
     io.on('reconnect', function () {
+        log.debug('reconnect, syncing with the hub');
+        console.log(drones);
         io.emit('sync', drones);
     });
 });
