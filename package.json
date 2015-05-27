@@ -1,4 +1,10 @@
 {
     "name": "hub-client",
-    "dependencies": {}
+    "version": "0.0.0",
+    "description": "hub-client",
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/serandules/hub-client.git"
+    }
 }
