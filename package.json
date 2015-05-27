@@ -2,7 +2,9 @@
     "name": "hub-client",
     "version": "0.0.0",
     "description": "hub-client",
-    "dependencies": {},
+    "dependencies": {
+        "logger": "serandules/logger#master"
+    },
     "repository": {
         "type": "git",
         "url": "git://github.com/serandules/hub-client.git"
