@@ -3,7 +3,10 @@
     "version": "0.0.0",
     "description": "hub-client",
     "dependencies": {
-        "logger": "serandules/logger#master"
+        "logger": "serandules/logger#master",
+        "procevent": "serandules/procevent#master",
+        "hub-agent": "serandules/hub-agent#master",
+        "droner": "serandules/droner#master"
     },
     "repository": {
         "type": "git",
