@@ -1,4 +1,5 @@
 var log = require('logger')('hub-client');
+var async = require('async');
 var droner = require('droner');
 var procevent = require('procevent')(process);
 
@@ -11,7 +12,26 @@ agent('/servers', function (err, io) {
 
     io.on('up', function () {
         log.debug('server up request');
-        procevent.emit('up');
+        var id;
+        var jobs = [];
+        for (id in drones) {
+            if (drones.hasOwnProperty(id)) {
+                jobs.push((function (id) {
+                    return function (done) {
+                        droner.stop(id, function (err) {
+                            done(err);
+                        });
+                    };
+                }(id)));
+            }
+        }
+        async.parallel(jobs, function (err, results) {
+            if (err) {
+                log.error(err);
+            }
+            log.debug('all drones stopped, starting self up');
+            procevent.emit('up');
+        });
     });
 
     io.on('start', function (id, domain, repo) {
